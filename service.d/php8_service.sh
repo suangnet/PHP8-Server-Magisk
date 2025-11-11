@@ -8,11 +8,16 @@ done
 # Wait system ready
 sleep 4
 
+# Path script
+MODULE_DIR="/data/adb/modules/php8"
+PHP_RUN_SCRIPT="/data/adb/modules/php8/bin/php_run"
+
 # Start PHP 8.4 service
-$MODPATH/bin/php_run -s
+if [ -f "$PHP_RUN_SCRIPT" ]; then
+    $PHP_RUN_SCRIPT -s
+fi
 
 # Start file watcher
-if [ -f "$MODPATH/bin/inotifyd" ]; then
-    # $1=skrip handler, $2=folder yang diawasi
-    $MODPATH/bin/inotifyd $MODPATH/bin/php_inotifyd $MODPATH >> /dev/null &
+if [ -f "$MODULE_DIR/bin/inotifyd" ]; then
+    $MODULE_DIR/bin/inotifyd $MODULE_DIR/bin/php_inotifyd $MODULE_DIR >> /dev/null &
 fi
