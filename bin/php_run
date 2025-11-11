@@ -1,0 +1,117 @@
+#!/system/bin/sh
+
+# Module path
+MODPATH=$(dirname "$0")/..
+
+# Define new folder structure
+BIN_DIR="$MODPATH/bin"
+LIB_DIR="$MODPATH/lib"
+ETC_DIR="$MODPATH/etc"
+VAR_DIR="$MODPATH/var"
+WWW_DIR="$VAR_DIR/www"
+TMP_DIR="$VAR_DIR/tmp"
+LOG_DIR="$VAR_DIR/log"
+
+# Server configuration
+wserv_ip="0.0.0.0"
+wserv_port="80"
+
+# Core file path
+php_bin="$BIN_DIR/php"
+php_ini_conf="$ETC_DIR/php.ini"
+php_log_path="$LOG_DIR/php8.log"
+php_pid_path="$TMP_DIR/php8.pid"
+
+# Busybox path
+if [ -f "/data/adb/magisk/busybox" ]; then
+    BUSYBOX="/data/adb/magisk/busybox"
+else
+    BUSYBOX="busybox"
+fi
+SETUIDGID="$BUSYBOX setuidgid"
+
+# Start server function
+start_wserv() {
+    mkdir -p $TMP_DIR
+    mkdir -p $LOG_DIR
+    rm -f ${php_log_path}
+
+    # Check if the server is running
+    if [ -f "$php_pid_path" ]; then
+        local php_pid=$(cat ${php_pid_path} 2>/dev/null)
+        if [ -d "/proc/${php_pid}" ]; then
+            echo "[INFO] : PHP Server is running (PID: ${php_pid})." > ${php_log_path}
+            exit 1
+        fi
+    fi
+
+    # Check if PHP binary exists
+    if [ ! -f "${php_bin}" ]; then
+        echo "[ERR] : PHP binary not found in ${php_bin}!" > ${php_log_path}
+        exit 1
+    fi
+
+    echo "[INFO] : Starting PHP 8.4 Server..." > ${php_log_path}
+    
+    # Run PHP Server
+    nohup $SETUIDGID 0:3005 env LD_LIBRARY_PATH=$LIB_DIR \
+        $php_bin -n -S $wserv_ip:$wserv_port -t $WWW_DIR -c $php_ini_conf \
+        >> $php_log_path 2>&1 &
+
+    # Write PID (Process Number) to tmp file
+    echo -n $! > ${php_pid_path}
+
+    sleep 1
+
+    # Verification
+    if [ -f "$php_pid_path" ]; then
+        local php_pid=$(cat ${php_pid_path} 2>/dev/null)
+        if [ -d "/proc/${php_pid}" ]; then
+            echo "[INFO] : Server SUCCESSFULLY started (PID: ${php_pid})." >> ${php_log_path}
+            echo "[INFO] : Listen in ${wserv_ip}:${wserv_port}" >> ${php_log_path}
+            echo "[INFO] : Web root in ${WWW_DIR}" >> ${php_log_path}
+        else
+            echo "[ERR] : Server FAILED to start. Check ${php_log_path} for error." >> ${php_log_path}
+        fi
+    fi
+}
+
+# Stop server function
+stop_wserver() {
+    if [ ! -f "$php_pid_path" ]; then
+        echo "[INFO] : Server appears to have stopped (PID file not found)."
+        return
+    fi
+    
+    local php_pid=$(cat ${php_pid_path} 2>/dev/null)
+    if [ -z "$php_pid" ] || [ ! -d "/proc/${php_pid}" ]; then
+        echo "[INFO] : Server has stopped (Process not found)."
+        rm -f ${php_pid_path}
+        return
+    fi
+
+    echo "[INFO] : Stopping server (PID: ${php_pid})..."
+    kill -9 ${php_pid}
+    rm -f ${php_pid_path}
+    echo "[INFO] : Server stopped."
+}
+
+# Argument control
+case "$1" in
+    -s|start)
+        start_wserv
+        ;;
+    -k|stop)
+        stop_wserver
+        ;;
+    -r|restart)
+        stop_wserver
+        sleep 1
+        start_wserv
+        ;;
+    *)
+        echo "Usage: $0 [-s|start] [-k|stop] [-r|restart]"
+        ;;
+esac
+
+exit 0

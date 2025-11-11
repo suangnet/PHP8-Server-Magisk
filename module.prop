@@ -1,0 +1,6 @@
+id=php8
+name=PHP 8.4 Server
+version=v1.0
+versionCode=1
+author=suangnet
+description=Standalone PHP 8.4 Server for Magisk.
