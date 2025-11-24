@@ -49,29 +49,33 @@ You can control the server manually using `su` via Terminal (Termux/ADB):
 
 **Start Server:**
 
-````bash
-/data/adb/modules/php8/bin/php_run -s```
+```bash
+/data/adb/modules/php8/bin/php_run -s
+```
 
 **Stop Server:**
+
 ```bash
-/data/adb/modules/php8/bin/php_run -k```
+/data/adb/modules/php8/bin/php_run -k
+```
 
 **Restart Server:**
+
 ```bash
-/data/adb/modules/php8/bin/php_run -r```
+/data/adb/modules/php8/bin/php_run -r
+```
 
 ## 📜 License
 
 This project is a bundle of software with different licenses:
 
-* **Module Scripts** (php_run, service.d, etc.) are licensed under the MIT License.
-* **PHP Binary & Extensions** are licensed under the PHP License v3.01.
-* **Libraries** (libcurl, openssl, etc.) are copyright of their respective owners.
+- **Module Scripts** (php_run, service.d, etc.) are licensed under the **MIT License**.
+- **PHP Binary & Extensions** are licensed under the **PHP License v3.01**.
+- **Libraries** (libcurl, openssl, etc.) are copyright of their respective owners.
 
 ## 🤝 Credits
 
-* **PHP Group** - For the PHP source.
-* **Termux** - For the build environment and libraries.
-* **Busybox NDK** - For the underlying shell utilities.
-* **Magisk** - For the module system.
-````
+- **PHP Group** - For the PHP source.
+- **Termux** - For the build environment and libraries.
+- **Busybox NDK** - For the underlying shell utilities.
+- **Magisk** - For the module system.
