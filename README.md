@@ -50,15 +50,15 @@ You can control the server manually using `su` via Terminal (Termux/ADB):
 **Start Server:**
 
 ````bash
-/data/adb/modules/php8/bin/php_run -s
+/data/adb/modules/php8/bin/php_run -s```
 
 **Stop Server:**
 ```bash
-/data/adb/modules/php8/bin/php_run -k
+/data/adb/modules/php8/bin/php_run -k```
 
 **Restart Server:**
 ```bash
-/data/adb/modules/php8/bin/php_run -r
+/data/adb/modules/php8/bin/php_run -r```
 
 ## 📜 License
 
