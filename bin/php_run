@@ -30,19 +30,31 @@ else
 fi
 SETUIDGID="$BUSYBOX setuidgid"
 
+# Check PID function
+check_pid_running() {
+    if [ -f "$php_pid_path" ]; then
+        local pid=$(cat "$php_pid_path")
+        if [ -d "/proc/$pid" ]; then
+            local cmdline=$(cat /proc/$pid/cmdline 2>/dev/null)
+            if echo "$cmdline" | grep -q "php"; then
+                return 0
+            fi
+        fi
+        rm -f "$php_pid_path"
+    fi
+    return 1
+}
+
 # Start server function
 start_wserv() {
     mkdir -p $TMP_DIR
     mkdir -p $LOG_DIR
     rm -f ${php_log_path}
 
-    # Check if the server is running
-    if [ -f "$php_pid_path" ]; then
-        local php_pid=$(cat ${php_pid_path} 2>/dev/null)
-        if [ -d "/proc/${php_pid}" ]; then
-            echo "[INFO] : PHP Server is running (PID: ${php_pid})." > ${php_log_path}
-            exit 1
-        fi
+    # Check before start
+    if check_pid_running; then
+        echo "[INFO] : PHP Server is already running (PID: $(cat $php_pid_path))." > ${php_log_path}
+        exit 0
     fi
 
     # Check if PHP binary exists
@@ -50,6 +62,9 @@ start_wserv() {
         echo "[ERR] : PHP binary not found in ${php_bin}!" > ${php_log_path}
         exit 1
     fi
+
+    # Clean up stray processes
+    killall php > /dev/null 2>&1
 
     echo "[INFO] : Starting PHP 8.4 Server..." > ${php_log_path}
     
@@ -61,39 +76,29 @@ start_wserv() {
     # Write PID (Process Number) to tmp file
     echo -n $! > ${php_pid_path}
 
-    sleep 1
+    sleep 2
 
     # Verification
-    if [ -f "$php_pid_path" ]; then
-        local php_pid=$(cat ${php_pid_path} 2>/dev/null)
-        if [ -d "/proc/${php_pid}" ]; then
-            echo "[INFO] : Server SUCCESSFULLY started (PID: ${php_pid})." >> ${php_log_path}
-            echo "[INFO] : Listen in ${wserv_ip}:${wserv_port}" >> ${php_log_path}
-            echo "[INFO] : Web root in ${WWW_DIR}" >> ${php_log_path}
-        else
-            echo "[ERR] : Server FAILED to start. Check ${php_log_path} for error." >> ${php_log_path}
-        fi
+    if check_pid_running; then
+        echo "[INFO] : Server SUCCESSFULLY started (PID: $(cat $php_pid_path))." >> ${php_log_path}
+        echo "[INFO] : Listen in ${wserv_ip}:${wserv_port}" >> ${php_log_path}
+        echo "[INFO] : Web root in ${WWW_DIR}" >> ${php_log_path}
+    else
+        echo "[ERR] : Server FAILED to start. Check ${php_log_path} for error." >> ${php_log_path}
     fi
 }
 
 # Stop server function
 stop_wserver() {
-    if [ ! -f "$php_pid_path" ]; then
-        echo "[INFO] : Server appears to have stopped (PID file not found)."
-        return
+    if [ -f "$php_pid_path" ]; then
+        local pid=$(cat "$php_pid_path")
+        kill -9 $pid > /dev/null 2>&1
+        rm -f "$php_pid_path"
+        echo "[INFO] : PHP server stopped."
+    else
+        killall php > /dev/null 2>&1
+        echo "[INFO] : Cleaned up PHP processes."
     fi
-    
-    local php_pid=$(cat ${php_pid_path} 2>/dev/null)
-    if [ -z "$php_pid" ] || [ ! -d "/proc/${php_pid}" ]; then
-        echo "[INFO] : Server has stopped (Process not found)."
-        rm -f ${php_pid_path}
-        return
-    fi
-
-    echo "[INFO] : Stopping server (PID: ${php_pid})..."
-    kill -9 ${php_pid}
-    rm -f ${php_pid_path}
-    echo "[INFO] : Server stopped."
 }
 
 # Argument control
