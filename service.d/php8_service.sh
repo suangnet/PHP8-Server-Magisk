@@ -10,11 +10,11 @@ sleep 4
 
 # Path script
 MODULE_DIR="/data/adb/modules/php8"
-PHP_RUN_SCRIPT="/data/adb/modules/php8/bin/php_run"
+PHP_RUN="/data/adb/modules/php8/bin/php_run"
 
 # Start PHP 8.4 service
-if [ -f "$PHP_RUN_SCRIPT" ]; then
-    $PHP_RUN_SCRIPT -s
+if [ -f "$PHP_RUN" ]; then
+    $PHP_RUN -s
 fi
 
 # Start file watcher
