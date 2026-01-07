@@ -11,6 +11,7 @@ jobs:
     permissions:
       contents: write
     env:
+      MODULE_FILENAME_PREFIX: "php8-magisk"
       ZIP_NAME: ""
 
     steps:
@@ -19,7 +20,7 @@ jobs:
 
       - name: Create ZIP Module
         run: |
-          ZIP_NAME="php8-magisk-${{ github.ref_name }}.zip"
+          ZIP_NAME="${{ env.MODULE_FILENAME_PREFIX }}-${{ github.ref_name }}.zip"
           zip -r "$ZIP_NAME" . -x ".git/*" ".github/*" "update.json" "README.md" ".gitignore" "*.DS_Store"
           echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
 
