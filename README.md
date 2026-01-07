@@ -1,27 +1,28 @@
 # PHP 8 Server for Magisk
 
-![Magisk](https://img.shields.io/badge/Magisk-Module-green) ![PHP](https://img.shields.io/badge/PHP-8.4.2-blue) ![License](https://img.shields.io/badge/License-MIT-orange)
+![Magisk](https://img.shields.io/badge/Magisk-Module-green) ![PHP](https://img.shields.io/badge/PHP-8.4.2-blue) ![License](https://img.shields.io/badge/License-MIT-orange) [![GitHub release (latest by date)](https://img.shields.io/github/v/release/suangnet/PHP8-Server-Magisk?style=for-the-badge&color=blue)](https://github.com/suangnet/PHP8-Server-Magisk/releases/latest)
 
 A standalone, lightweight, and fully functional PHP 8 Web Server module for Android, powered by Magisk.
 Run PHP scripts and host local websites on your device without the need for Termux or third-party apps running in the background.
 
-## 🌟 Features
+## Features
 
-- **Latest PHP Version:** Includes pre-compiled PHP **8.4.2** binary.
-- **Standalone:** Runs independently with its own libraries (Libcurl, OpenSSL, Zip, GD, Opcache, etc.). No Termux installation required.
+- **Latest PHP Version:** Includes pre-compiled PHP **8.4** binary.
+- **Architecture Support:** Supports both ARM (32-bit) and ARM64 (64-bit) devices.
+- **Standalone:** Runs independently with its own libraries (Libcurl, OpenSSL, Zip, GD, Opcache, etc.).
 - **Auto-Start:** Automatically starts the server on system boot.
 - **Optimized:** Pre-configured `php.ini` for mobile performance (Zend Opcache enabled).
 - **Root Access:** Runs with root privileges (via Magisk), allowing system-level script execution.
 
-## 📋 Requirements
+## Requirements
 
 - Rooted Android Device (Android 7.0+)
 - **Magisk Manager** (Magisk v20.4 or newer)
 - **Busybox for Android NDK** module installed (Required for script execution)
 
-## 📦 Installation
+## Installation
 
-1.  Download the latest `php8.zip` release.
+1.  Download the latest `php8.zip` release from the [Releases Page](https://github.com/suangnet/PHP8-Server-Magisk/releases/latest).
 2.  Open **Magisk Manager**.
 3.  Go to the **Modules** tab.
 4.  Tap **"Install from storage"** and select the zip file.
@@ -29,7 +30,7 @@ Run PHP scripts and host local websites on your device without the need for Term
 
 The server will start automatically after the boot animation finishes.
 
-## ⚙️ Configuration & Paths
+## Configuration & Paths
 
 After installation, the module resides in `/data/adb/modules/php8/`.
 
@@ -43,7 +44,7 @@ After installation, the module resides in `/data/adb/modules/php8/`.
 
 > **Note:** To edit files, use a root explorer (like MT Manager or Mixplorer) or terminal via `su`.
 
-## 🛠️ Manual Usage (Terminal)
+## Manual Usage (Terminal)
 
 You can control the server manually using `su` via Terminal (Termux/ADB):
 
@@ -65,7 +66,7 @@ You can control the server manually using `su` via Terminal (Termux/ADB):
 /data/adb/modules/php8/bin/php_run -r
 ```
 
-## 📜 License
+## License
 
 This project is a bundle of software with different licenses:
 
@@ -73,9 +74,10 @@ This project is a bundle of software with different licenses:
 - **PHP Binary & Extensions** are licensed under the **PHP License v3.01**.
 - **Libraries** (libcurl, openssl, etc.) are copyright of their respective owners.
 
-## 🤝 Credits
+## Credits
 
 - **PHP Group** - For the PHP source.
+- **Static PHP CLI by crazywhalecc** - Tool used to build the static PHP binary.
 - **Termux** - For the build environment and libraries.
 - **Busybox NDK** - For the underlying shell utilities.
 - **Magisk** - For the module system.
