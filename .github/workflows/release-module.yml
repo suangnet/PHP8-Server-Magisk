@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      ZIP_NAME: ""
 
     steps:
       - name: Checkout Code
