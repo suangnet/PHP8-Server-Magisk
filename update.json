@@ -1,0 +1,6 @@
+{
+  "version": "v1.1.0",
+  "versionCode": 10100,
+  "zipUrl": "https://github.com/suangnet/PHP8-Server-Magisk/releases/download/v1.1.0/php8-magisk-v1.1.0.zip",
+  "changelog": "https://raw.githubusercontent.com/suangnet/PHP8-Server-Magisk/main/changelog.md"
+}

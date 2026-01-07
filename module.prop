@@ -1,6 +1,7 @@
 id=php8
 name=PHP 8 Server
-version=v1.0
-versionCode=1
+version=v1.1.0
+versionCode=10100
 author=suangnet
 description=Standalone PHP 8 Server for Android (Magisk).
+updateJson=https://raw.githubusercontent.com/suangnet/PHP8-Server-Magisk/main/update.json
