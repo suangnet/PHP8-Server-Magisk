@@ -1,6 +1,6 @@
 # PHP 8 Server for Magisk
 
-![Magisk](https://img.shields.io/badge/Magisk-Module-green) ![PHP](https://img.shields.io/badge/PHP-8.4.2-blue) ![License](https://img.shields.io/badge/License-MIT-orange) [![GitHub Release](https://img.shields.io/github/v/release/suangnet/PHP8-Server-Magisk?style=flat&color=blue)](https://github.com/suangnet/PHP8-Server-Magisk/releases/latest)
+![Magisk](https://img.shields.io/badge/Magisk-Module-green) ![PHP](https://img.shields.io/badge/PHP-8.4.2-blue) ![License](https://img.shields.io/badge/License-MIT-orange) [![Release](https://img.shields.io/github/v/release/suangnet/PHP8-Server-Magisk?style=flat&color=blue)](https://github.com/suangnet/PHP8-Server-Magisk/releases/latest)
 
 A standalone, lightweight, and fully functional PHP 8 Web Server module for Android, powered by Magisk.
 Run PHP scripts and host local websites on your device without the need for Termux or third-party apps running in the background.
